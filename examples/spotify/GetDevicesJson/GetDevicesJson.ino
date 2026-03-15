@@ -1,8 +1,7 @@
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
+#include <OffbeatMicrocontrollerExamples.h>
 #include <WebSocketsClient.h>
-
-#include <offbeat/spotify/SpotifyCommandKeys.h>
 
 #include "offbeat_test_config.h"
 
@@ -100,4 +99,3 @@ void setup() {
 void loop() {
   webSocket.loop();
 }
-
