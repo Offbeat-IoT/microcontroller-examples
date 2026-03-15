@@ -1,0 +1,12 @@
+#pragma once
+
+#define OFFBEAT_WIFI_SSID "replace-me"
+#define OFFBEAT_WIFI_PASSWORD "replace-me"
+#define OFFBEAT_WS_HOST "192.168.1.10"
+#define OFFBEAT_WS_PORT 8765
+#define OFFBEAT_WS_PATH "/"
+#define OFFBEAT_TEST_DEVICE_ID "device-123"
+#define OFFBEAT_TEST_DEVICE_NAME "Kitchen Speaker"
+#define OFFBEAT_TEST_VOLUME 42
+#define OFFBEAT_TEST_MODE 1
+
