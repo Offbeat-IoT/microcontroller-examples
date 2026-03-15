@@ -29,7 +29,11 @@ The first Spotify examples use:
 - `ESP8266WiFi`
 - `WebSockets`
 - `ArduinoJson`
-- `ArduinoCbor`
+- `ArduinoCbor` from `https://github.com/bergos/ArduinoCbor`
+
+`ArduinoJson` and `WebSockets` can be installed with the Arduino Library Manager.
+
+`ArduinoCbor` currently needs to be installed manually from GitHub.
 
 ## Configuration
 
@@ -46,4 +50,3 @@ The private `microcontroller-examples-tests` repository generates the real `offb
 ## Documentation Includes
 
 AsciiDoc pages should include tagged regions from the real `.ino` files rather than re-generating snippets elsewhere.
-
