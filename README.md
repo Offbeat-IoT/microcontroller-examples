@@ -33,7 +33,11 @@ The shared code is intentionally narrow:
 - `src/offbeat/spotify/SpotifyGetDevices.h` defines the command keys, parse status, and the `SpotifyDevice` struct.
 - `src/offbeat/spotify/SpotifyGetDevicesJson.h` builds the JSON request and visits parsed JSON devices.
 - `src/offbeat/spotify/SpotifyGetDevicesCbor.h` builds the CBOR request and visits parsed CBOR devices.
+- `src/offbeat/spotify/SpotifyPlaybackState.h` defines the request keys and the small playback-state structs used by `get state` and `currently playing`.
+- `src/offbeat/spotify/SpotifyPlaybackStateJson.h` builds JSON playback-state requests and parses the matching response payloads.
+- `src/offbeat/spotify/SpotifyPlaybackStateCbor.h` builds CBOR playback-state requests and parses the matching response payloads.
 - `src/SpotifyGetDevicesJson.h` and `src/SpotifyGetDevicesCbor.h` are thin Arduino-friendly entry headers that forward to the provider-specific implementation.
+- `src/SpotifyPlaybackStateJson.h` and `src/SpotifyPlaybackStateCbor.h` do the same for the playback-state examples.
 
 The sketches still own:
 
@@ -51,6 +55,8 @@ This repository keeps hardware out of the default test flow. The confidence mode
 1. Host-side contract tests validate the JSON and CBOR payload shapes.
 2. `arduino-cli` compile checks prove the real sketches still build for the target board.
 3. Manual board testing can be done later once a set of examples is stable.
+
+GitHub Actions runs the same flow on every push and pull request via [.github/workflows/build.yml](./.github/workflows/build.yml).
 
 Install the host-side test dependency:
 
@@ -82,7 +88,7 @@ The compile script does the repetitive setup for you:
 
 ## Current Example Dependencies
 
-The first Spotify examples use:
+The current Spotify examples use:
 
 - `ESP8266WiFi`
 - `WebSockets`

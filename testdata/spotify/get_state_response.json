@@ -1,0 +1,17 @@
+{
+  "spotify.state.response": {
+    "isPlaying": true,
+    "item": {
+      "artist": "Sample Artist",
+      "album": "Sample Album",
+      "name": "Sample Track"
+    },
+    "shuffling": false,
+    "device": {
+      "volumepercent": 59,
+      "name": "Kitchen speaker",
+      "id": "string"
+    }
+  },
+  "endpointId": "test-endpoint-id"
+}

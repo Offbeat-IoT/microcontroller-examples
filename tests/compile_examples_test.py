@@ -20,6 +20,10 @@ class CompileExamplesTest(unittest.TestCase):
 
         self.assertIn(REPO_ROOT / "examples" / "spotify" / "GetDevicesJson", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "spotify" / "GetDevicesCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "GetStateJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "GetStateCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "CurrentlyPlayingJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "CurrentlyPlayingCbor", sketch_directories)
 
     def test_ensure_local_config_headers_copies_missing_config(self) -> None:
         with tempfile.TemporaryDirectory() as temp_directory_name:

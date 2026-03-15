@@ -1,0 +1,7 @@
+#pragma once
+
+#define OFFBEAT_WIFI_SSID "replace-me"
+#define OFFBEAT_WIFI_PASSWORD "replace-me"
+#define OFFBEAT_WS_HOST "192.168.1.60"
+#define OFFBEAT_WS_PORT 8091
+#define OFFBEAT_WS_PATH "/ws"
