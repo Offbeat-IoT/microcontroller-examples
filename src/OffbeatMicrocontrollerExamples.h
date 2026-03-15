@@ -1,5 +1,5 @@
 #pragma once
 
-#include <offbeat/core/OffbeatExampleMetadata.h>
-#include <offbeat/spotify/SpotifyCommandKeys.h>
-
+#include <offbeat/spotify/SpotifyGetDevices.h>
+#include <offbeat/spotify/SpotifyGetDevicesCbor.h>
+#include <offbeat/spotify/SpotifyGetDevicesJson.h>

@@ -1,0 +1,12 @@
+{
+  "spotify.devices.response": {
+    "device-kitchen": {
+      "name": "Kitchen",
+      "volume": 42
+    },
+    "device-office": {
+      "name": "Office",
+      "volume": 17
+    }
+  }
+}

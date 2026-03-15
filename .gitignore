@@ -1,3 +1,6 @@
 examples/**/offbeat_test_config.h
 **/.DS_Store
-
+.arduino-libraries/
+.build/
+.venv/
+__pycache__/

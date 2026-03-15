@@ -1,7 +1,7 @@
 #include <ArduinoCbor.h>
 #include <ESP8266WiFi.h>
-#include <OffbeatMicrocontrollerExamples.h>
 #include <WebSocketsClient.h>
+#include <offbeat/spotify/SpotifyGetDevicesCbor.h>
 
 #include "offbeat_test_config.h"
 
@@ -29,55 +29,48 @@ bool connectWifi() {
 
 // tag::spotify-get-devices-cbor-docs[]
 void sendSpotifyGetDevicesCbor(WebSocketsClient& socket) {
-  CborBuffer buffer(64);
-  CborObject payload(buffer);
-  payload.set(offbeat::spotify::kDevicesCommand, "");
-
   uint8_t encoded[64];
-  size_t encodedLength = payload.encode(encoded, sizeof(encoded));
+  size_t encodedLength = offbeat::spotify::buildGetDevicesCborRequest(encoded, sizeof(encoded));
+  if (encodedLength == 0) {
+    Serial.println("Unable to build spotify.devices request");
+    return;
+  }
 
   socket.sendBIN(encoded, encodedLength);
   Serial.println("REQUEST_SENT=spotify.devices");
 }
 
+void printSpotifyDevice(const offbeat::spotify::SpotifyDevice& device) {
+  Serial.print("Device id: ");
+  Serial.println(device.id);
+
+  Serial.print("Device name: ");
+  Serial.println(device.name);
+
+  Serial.print("Volume: ");
+  Serial.println(device.volume);
+
+  Serial.print("DEVICE_ID=");
+  Serial.println(device.id);
+  Serial.print("DEVICE_NAME=");
+  Serial.println(device.name);
+  Serial.print("VOLUME=");
+  Serial.println(device.volume);
+}
+
 void handleSpotifyGetDevicesCborResponse(uint8_t* payload, size_t length) {
   CborBuffer buffer(1024);
-  cn_cbor_errback err;
-  cn_cbor* root = cn_cbor_decode(payload, length, &buffer.context, &err);
-  if (root == NULL) {
+  offbeat::spotify::SpotifyGetDevicesParseStatus status =
+      offbeat::spotify::visitGetDevicesCborResponse(payload, length, buffer, printSpotifyDevice);
+
+  if (status == offbeat::spotify::SpotifyGetDevicesParseStatus::kInvalidPayload) {
     Serial.println("Unable to parse spotify CBOR response");
     return;
   }
 
-  cn_cbor* devices = cn_cbor_mapget_string(root, offbeat::spotify::kDevicesResponse);
-  if (devices == NULL || devices->type != CN_CBOR_MAP) {
+  if (status == offbeat::spotify::SpotifyGetDevicesParseStatus::kMissingResponse) {
     Serial.println("No spotify.devices.response payload");
     return;
-  }
-
-  for (cn_cbor* deviceEntry = devices->first_child;
-       deviceEntry != NULL && deviceEntry->next != NULL;
-       deviceEntry = deviceEntry->next->next) {
-    const char* deviceId = deviceEntry->v.str;
-    CborObject device(buffer, deviceEntry->next);
-    const char* name = device.get("name").asString();
-    long volume = device.get("volume").asInteger();
-
-    Serial.print("Device id: ");
-    Serial.println(deviceId != NULL ? deviceId : "unknown");
-
-    Serial.print("Device name: ");
-    Serial.println(name != NULL ? name : "unknown");
-
-    Serial.print("Volume: ");
-    Serial.println(volume);
-
-    Serial.print("DEVICE_ID=");
-    Serial.println(deviceId != NULL ? deviceId : "unknown");
-    Serial.print("DEVICE_NAME=");
-    Serial.println(name != NULL ? name : "unknown");
-    Serial.print("VOLUME=");
-    Serial.println(volume);
   }
 
   Serial.println("TEST:PASS");

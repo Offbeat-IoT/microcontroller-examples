@@ -1,7 +1,7 @@
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
-#include <OffbeatMicrocontrollerExamples.h>
 #include <WebSocketsClient.h>
+#include <offbeat/spotify/SpotifyGetDevicesJson.h>
 
 #include "offbeat_test_config.h"
 
@@ -29,51 +29,47 @@ bool connectWifi() {
 
 // tag::spotify-get-devices-json-docs[]
 void sendSpotifyGetDevicesJson(WebSocketsClient& socket) {
-  StaticJsonDocument<64> payload;
-  payload[offbeat::spotify::kDevicesCommand] = "";
-
   String body;
-  serializeJson(payload, body);
+  if (!offbeat::spotify::buildGetDevicesJsonRequest(body)) {
+    Serial.println("Unable to build spotify.devices request");
+    return;
+  }
 
   socket.sendTXT(body);
   Serial.println("REQUEST_SENT=spotify.devices");
 }
 
+void printSpotifyDevice(const offbeat::spotify::SpotifyDevice& device) {
+  Serial.print("Device id: ");
+  Serial.println(device.id);
+
+  Serial.print("Device name: ");
+  Serial.println(device.name);
+
+  Serial.print("Volume: ");
+  Serial.println(device.volume);
+
+  Serial.print("DEVICE_ID=");
+  Serial.println(device.id);
+  Serial.print("DEVICE_NAME=");
+  Serial.println(device.name);
+  Serial.print("VOLUME=");
+  Serial.println(device.volume);
+}
+
 void handleSpotifyGetDevicesJsonResponse(uint8_t* payload, size_t length) {
   StaticJsonDocument<2048> response;
-  DeserializationError error = deserializeJson(response, payload, length);
-  if (error) {
+  offbeat::spotify::SpotifyGetDevicesParseStatus status =
+      offbeat::spotify::visitGetDevicesJsonResponse(payload, length, response, printSpotifyDevice);
+
+  if (status == offbeat::spotify::SpotifyGetDevicesParseStatus::kInvalidPayload) {
     Serial.println("Unable to parse spotify response");
     return;
   }
 
-  JsonObject devices = response[offbeat::spotify::kDevicesResponse];
-  if (devices.isNull()) {
+  if (status == offbeat::spotify::SpotifyGetDevicesParseStatus::kMissingResponse) {
     Serial.println("No spotify.devices.response payload");
     return;
-  }
-
-  for (JsonPair deviceEntry : devices) {
-    const char* deviceId = deviceEntry.key().c_str();
-    JsonObject device = deviceEntry.value().as<JsonObject>();
-    const char* name = device["name"] | "unknown";
-    int volume = device["volume"] | -1;
-
-    Serial.print("Device id: ");
-    Serial.println(deviceId);
-
-    Serial.print("Device name: ");
-    Serial.println(name);
-
-    Serial.print("Volume: ");
-    Serial.println(volume);
-
-    Serial.print("DEVICE_ID=");
-    Serial.println(deviceId);
-    Serial.print("DEVICE_NAME=");
-    Serial.println(name);
-    Serial.print("VOLUME=");
-    Serial.println(volume);
   }
 
   Serial.println("TEST:PASS");
