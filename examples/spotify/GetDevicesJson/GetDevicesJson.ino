@@ -1,7 +1,7 @@
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
+#include <SpotifyGetDevicesJson.h>
 #include <WebSocketsClient.h>
-#include <offbeat/spotify/SpotifyGetDevicesJson.h>
 
 #include "offbeat_test_config.h"
 

@@ -1,7 +1,7 @@
 #include <ArduinoCbor.h>
 #include <ESP8266WiFi.h>
+#include <SpotifyGetDevicesCbor.h>
 #include <WebSocketsClient.h>
-#include <offbeat/spotify/SpotifyGetDevicesCbor.h>
 
 #include "offbeat_test_config.h"
 

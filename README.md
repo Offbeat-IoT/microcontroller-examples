@@ -33,6 +33,7 @@ The shared code is intentionally narrow:
 - `src/offbeat/spotify/SpotifyGetDevices.h` defines the command keys, parse status, and the `SpotifyDevice` struct.
 - `src/offbeat/spotify/SpotifyGetDevicesJson.h` builds the JSON request and visits parsed JSON devices.
 - `src/offbeat/spotify/SpotifyGetDevicesCbor.h` builds the CBOR request and visits parsed CBOR devices.
+- `src/SpotifyGetDevicesJson.h` and `src/SpotifyGetDevicesCbor.h` are thin Arduino-friendly entry headers that forward to the provider-specific implementation.
 
 The sketches still own:
 
