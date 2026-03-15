@@ -7,15 +7,24 @@
 
 WebSocketsClient webSocket;
 
-void connectWifi() {
+bool connectWifi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(OFFBEAT_WIFI_SSID, OFFBEAT_WIFI_PASSWORD);
+  Serial.println("WIFI_CONNECTING");
 
+  unsigned long nextStatusLogAt = millis();
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
+    unsigned long now = millis();
+    if (now >= nextStatusLogAt) {
+      Serial.print("WIFI_STATUS=");
+      Serial.println(static_cast<int>(WiFi.status()));
+      nextStatusLogAt = now + 5000;
+    }
   }
 
   Serial.println("WIFI_CONNECTED");
+  return true;
 }
 
 // tag::spotify-get-devices-json-docs[]
@@ -89,7 +98,9 @@ void setup() {
   Serial.begin(115200);
   delay(200);
   Serial.println("TEST:READY");
-  connectWifi();
+  if (!connectWifi()) {
+    return;
+  }
 
   webSocket.begin(OFFBEAT_WS_HOST, OFFBEAT_WS_PORT, OFFBEAT_WS_PATH);
   webSocket.onEvent(websocketEvent);
