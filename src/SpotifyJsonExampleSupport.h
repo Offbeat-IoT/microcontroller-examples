@@ -31,7 +31,7 @@ inline ParseStatus parseResult(
     return ParseStatus::kInvalidPayload;
   }
 
-  root = document.as<JsonObjectConst>();
+  root = document.template as<JsonObjectConst>();
   JsonObjectConst response = root[responseKey].as<JsonObjectConst>();
   if (response.isNull()) {
     return ParseStatus::kMissingResponse;
