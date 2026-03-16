@@ -1,8 +1,8 @@
 #include <ArduinoCbor.h>
+#include <SpotifyExampleSupport.h>
 #include <SpotifyPlaybackCommandCbor.h>
 #include <WebSocketsClient.h>
 
-#include "../SpotifyExampleSupport.h"
 #include "offbeat_test_config.h"
 
 WebSocketsClient webSocket;

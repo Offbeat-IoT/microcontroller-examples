@@ -7,67 +7,68 @@
 
 WebSocketsClient webSocket;
 
-// tag::spotify-shuffle-on-cbor-docs[]
-constexpr char kDesiredShuffleState[] = "on";
+// tag::spotify-play-on-device-cbor-docs[]
+constexpr char kDeviceId[] = "the id";
 
-void sendSpotifyShuffleOnCbor(WebSocketsClient& socket) {
-  uint8_t encoded[96];
-  size_t encodedLength = offbeat::spotify::buildShuffleCborRequest(
-      kDesiredShuffleState, encoded, sizeof(encoded));
+void sendSpotifyPlayOnDeviceCbor(WebSocketsClient& socket) {
+  uint8_t encoded[160];
+  size_t encodedLength = offbeat::spotify::buildPlaybackCommandCborRequest(
+      "spotify.play.on", kDeviceId, encoded, sizeof(encoded));
   if (encodedLength == 0) {
-    Serial.println("Unable to build spotify.shuffle request");
+    Serial.println("Unable to build spotify.play.on request");
     return;
   }
 
   socket.sendBIN(encoded, encodedLength);
-  Serial.println("REQUEST_SENT=spotify.shuffle");
+  Serial.println("REQUEST_SENT=spotify.play.on");
 }
 
-void handleSpotifyShuffleOnCborResponse(uint8_t* payload, size_t length) {
+void handleSpotifyPlayOnDeviceCborResponse(uint8_t* payload, size_t length) {
   CborBuffer buffer(256);
-  offbeat::spotify::SpotifyPlaybackCommandResult actionResult;
+  offbeat::spotify::SpotifyPlaybackCommandResult result;
   offbeat::spotify::SpotifyPlaybackCommandParseStatus status =
-      offbeat::spotify::parseShuffleCborResponse(payload, length, buffer, actionResult);
+      offbeat::spotify::parsePlaybackCommandCborResponse(
+          payload, length, buffer, "spotify.play.on.response", result);
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kInvalidPayload) {
-    Serial.println("Unable to parse spotify shuffle response");
+    Serial.println("Unable to parse spotify play.on response");
     return;
   }
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kMissingResponse) {
-    Serial.println("No spotify.shuffle.response payload");
+    Serial.println("No spotify.play.on.response payload");
     return;
   }
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kMissingResult) {
-    Serial.println("No result in spotify.shuffle.response payload");
+    Serial.println("No result in spotify.play.on.response payload");
     return;
   }
 
-  Serial.print("Desired shuffle state: ");
-  Serial.println(kDesiredShuffleState);
+  Serial.print("Device ID: ");
+  Serial.println(kDeviceId);
   Serial.print("Result: ");
-  Serial.println(actionResult.result);
+  Serial.println(result.result);
   Serial.print("Endpoint ID: ");
-  Serial.println(actionResult.endpointId);
-  Serial.print("SHUFFLE_STATE=");
-  Serial.println(kDesiredShuffleState);
+  Serial.println(result.endpointId);
+  Serial.print("DEVICE_ID=");
+  Serial.println(kDeviceId);
   Serial.print("RESULT=");
-  Serial.println(actionResult.result);
+  Serial.println(result.result);
   Serial.print("ENDPOINT_ID=");
-  Serial.println(actionResult.endpointId);
+  Serial.println(result.endpointId);
   Serial.println("TEST:PASS");
 }
-// end::spotify-shuffle-on-cbor-docs[]
+// end::spotify-play-on-device-cbor-docs[]
 
 void websocketEvent(WStype_t type, uint8_t* payload, size_t length) {
   switch (type) {
     case WStype_CONNECTED:
       Serial.println("WS_CONNECTED");
-      sendSpotifyShuffleOnCbor(webSocket);
+      sendSpotifyPlayOnDeviceCbor(webSocket);
       break;
     case WStype_BIN:
-      handleSpotifyShuffleOnCborResponse(payload, length);
+      handleSpotifyPlayOnDeviceCborResponse(payload, length);
       break;
     default:
       break;

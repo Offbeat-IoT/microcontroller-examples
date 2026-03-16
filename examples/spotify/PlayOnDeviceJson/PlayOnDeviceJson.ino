@@ -7,65 +7,66 @@
 
 WebSocketsClient webSocket;
 
-// tag::spotify-shuffle-on-json-docs[]
-constexpr char kDesiredShuffleState[] = "on";
+// tag::spotify-play-on-device-json-docs[]
+constexpr char kDeviceId[] = "the id";
 
-void sendSpotifyShuffleOnJson(WebSocketsClient& socket) {
+void sendSpotifyPlayOnDeviceJson(WebSocketsClient& socket) {
   String body;
-  if (!offbeat::spotify::buildShuffleJsonRequest(kDesiredShuffleState, body)) {
-    Serial.println("Unable to build spotify.shuffle request");
+  if (!offbeat::spotify::buildPlaybackCommandJsonRequest("spotify.play.on", kDeviceId, body)) {
+    Serial.println("Unable to build spotify.play.on request");
     return;
   }
 
   socket.sendTXT(body);
-  Serial.println("REQUEST_SENT=spotify.shuffle");
+  Serial.println("REQUEST_SENT=spotify.play.on");
 }
 
-void handleSpotifyShuffleOnJsonResponse(uint8_t* payload, size_t length) {
+void handleSpotifyPlayOnDeviceJsonResponse(uint8_t* payload, size_t length) {
   StaticJsonDocument<512> response;
-  offbeat::spotify::SpotifyPlaybackCommandResult actionResult;
+  offbeat::spotify::SpotifyPlaybackCommandResult result;
   offbeat::spotify::SpotifyPlaybackCommandParseStatus status =
-      offbeat::spotify::parseShuffleJsonResponse(payload, length, response, actionResult);
+      offbeat::spotify::parsePlaybackCommandJsonResponse(
+          payload, length, response, "spotify.play.on.response", result);
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kInvalidPayload) {
-    Serial.println("Unable to parse spotify shuffle response");
+    Serial.println("Unable to parse spotify play.on response");
     return;
   }
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kMissingResponse) {
-    Serial.println("No spotify.shuffle.response payload");
+    Serial.println("No spotify.play.on.response payload");
     return;
   }
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kMissingResult) {
-    Serial.println("No result in spotify.shuffle.response payload");
+    Serial.println("No result in spotify.play.on.response payload");
     return;
   }
 
-  Serial.print("Desired shuffle state: ");
-  Serial.println(kDesiredShuffleState);
+  Serial.print("Device ID: ");
+  Serial.println(kDeviceId);
   Serial.print("Result: ");
-  Serial.println(actionResult.result);
+  Serial.println(result.result);
   Serial.print("Endpoint ID: ");
-  Serial.println(actionResult.endpointId);
-  Serial.print("SHUFFLE_STATE=");
-  Serial.println(kDesiredShuffleState);
+  Serial.println(result.endpointId);
+  Serial.print("DEVICE_ID=");
+  Serial.println(kDeviceId);
   Serial.print("RESULT=");
-  Serial.println(actionResult.result);
+  Serial.println(result.result);
   Serial.print("ENDPOINT_ID=");
-  Serial.println(actionResult.endpointId);
+  Serial.println(result.endpointId);
   Serial.println("TEST:PASS");
 }
-// end::spotify-shuffle-on-json-docs[]
+// end::spotify-play-on-device-json-docs[]
 
 void websocketEvent(WStype_t type, uint8_t* payload, size_t length) {
   switch (type) {
     case WStype_CONNECTED:
       Serial.println("WS_CONNECTED");
-      sendSpotifyShuffleOnJson(webSocket);
+      sendSpotifyPlayOnDeviceJson(webSocket);
       break;
     case WStype_TEXT:
-      handleSpotifyShuffleOnJsonResponse(payload, length);
+      handleSpotifyPlayOnDeviceJsonResponse(payload, length);
       break;
     default:
       break;

@@ -1,73 +1,71 @@
-#include <ArduinoCbor.h>
+#include <ArduinoJson.h>
 #include <SpotifyExampleSupport.h>
-#include <SpotifyPlaybackCommandCbor.h>
+#include <SpotifyPlaybackCommandJson.h>
 #include <WebSocketsClient.h>
 
 #include "offbeat_test_config.h"
 
 WebSocketsClient webSocket;
 
-// tag::spotify-shuffle-on-cbor-docs[]
-constexpr char kDesiredShuffleState[] = "on";
+// tag::spotify-repeat-context-json-docs[]
+constexpr char kDesiredRepeatState[] = "context";
 
-void sendSpotifyShuffleOnCbor(WebSocketsClient& socket) {
-  uint8_t encoded[96];
-  size_t encodedLength = offbeat::spotify::buildShuffleCborRequest(
-      kDesiredShuffleState, encoded, sizeof(encoded));
-  if (encodedLength == 0) {
-    Serial.println("Unable to build spotify.shuffle request");
+void sendSpotifyRepeatContextJson(WebSocketsClient& socket) {
+  String body;
+  if (!offbeat::spotify::buildRepeatJsonRequest(kDesiredRepeatState, body)) {
+    Serial.println("Unable to build spotify.repeat request");
     return;
   }
 
-  socket.sendBIN(encoded, encodedLength);
-  Serial.println("REQUEST_SENT=spotify.shuffle");
+  socket.sendTXT(body);
+  Serial.println("REQUEST_SENT=spotify.repeat");
 }
 
-void handleSpotifyShuffleOnCborResponse(uint8_t* payload, size_t length) {
-  CborBuffer buffer(256);
+void handleSpotifyRepeatContextJsonResponse(uint8_t* payload, size_t length) {
+  StaticJsonDocument<512> response;
   offbeat::spotify::SpotifyPlaybackCommandResult actionResult;
   offbeat::spotify::SpotifyPlaybackCommandParseStatus status =
-      offbeat::spotify::parseShuffleCborResponse(payload, length, buffer, actionResult);
+      offbeat::spotify::parseRepeatJsonResponse(payload, length, response, actionResult);
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kInvalidPayload) {
-    Serial.println("Unable to parse spotify shuffle response");
+    Serial.println("Unable to parse spotify repeat response");
     return;
   }
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kMissingResponse) {
-    Serial.println("No spotify.shuffle.response payload");
+    Serial.println("No spotify.repeat.response payload");
     return;
   }
 
   if (status == offbeat::spotify::SpotifyPlaybackCommandParseStatus::kMissingResult) {
-    Serial.println("No result in spotify.shuffle.response payload");
+    Serial.println("No result in spotify.repeat.response payload");
     return;
   }
 
-  Serial.print("Desired shuffle state: ");
-  Serial.println(kDesiredShuffleState);
+  Serial.print("Desired repeat state: ");
+  Serial.println(kDesiredRepeatState);
   Serial.print("Result: ");
   Serial.println(actionResult.result);
   Serial.print("Endpoint ID: ");
   Serial.println(actionResult.endpointId);
-  Serial.print("SHUFFLE_STATE=");
-  Serial.println(kDesiredShuffleState);
+  Serial.print("REPEAT_STATE=");
+  Serial.println(kDesiredRepeatState);
   Serial.print("RESULT=");
   Serial.println(actionResult.result);
   Serial.print("ENDPOINT_ID=");
   Serial.println(actionResult.endpointId);
   Serial.println("TEST:PASS");
 }
-// end::spotify-shuffle-on-cbor-docs[]
+// end::spotify-repeat-context-json-docs[]
 
 void websocketEvent(WStype_t type, uint8_t* payload, size_t length) {
   switch (type) {
     case WStype_CONNECTED:
       Serial.println("WS_CONNECTED");
-      sendSpotifyShuffleOnCbor(webSocket);
+      sendSpotifyRepeatContextJson(webSocket);
       break;
-    case WStype_BIN:
-      handleSpotifyShuffleOnCborResponse(payload, length);
+    case WStype_TEXT:
+      handleSpotifyRepeatContextJsonResponse(payload, length);
       break;
     default:
       break;
