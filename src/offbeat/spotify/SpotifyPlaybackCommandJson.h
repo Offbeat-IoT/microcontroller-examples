@@ -57,7 +57,7 @@ inline SpotifyPlaybackCommandParseStatus parsePlaybackCommandJsonResponse(
     return SpotifyPlaybackCommandParseStatus::kInvalidPayload;
   }
 
-  JsonObjectConst root = document.as<JsonObjectConst>();
+  JsonObjectConst root = document.template as<JsonObjectConst>();
   JsonObjectConst response = root[responseKey].template as<JsonObjectConst>();
   if (response.isNull()) {
     return SpotifyPlaybackCommandParseStatus::kMissingResponse;
