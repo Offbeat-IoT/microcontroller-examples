@@ -1,0 +1,6 @@
+{
+  "spotify.volume.response": {
+    "result": "OK"
+  },
+  "endpointId": "test-endpoint-id"
+}

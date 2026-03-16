@@ -24,6 +24,16 @@ class CompileExamplesTest(unittest.TestCase):
         self.assertIn(REPO_ROOT / "examples" / "spotify" / "GetStateCbor", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "spotify" / "CurrentlyPlayingJson", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "spotify" / "CurrentlyPlayingCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "PlayJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "PlayCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "PausePlaybackJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "PausePlaybackCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "NextTrackJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "NextTrackCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "PreviousTrackJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "PreviousTrackCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "SetVolumeJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "spotify" / "SetVolumeCbor", sketch_directories)
 
     def test_ensure_local_config_headers_copies_missing_config(self) -> None:
         with tempfile.TemporaryDirectory() as temp_directory_name:

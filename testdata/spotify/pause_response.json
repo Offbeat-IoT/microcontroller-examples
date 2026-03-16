@@ -1,0 +1,6 @@
+{
+  "spotify.pause.response": {
+    "result": "OK"
+  },
+  "endpointId": "test-endpoint-id"
+}

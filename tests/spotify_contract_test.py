@@ -51,6 +51,15 @@ def normalize_playback_state(payload: dict[str, object], response_key: str) -> d
     }
 
 
+def normalize_command_result(payload: dict[str, object], response_key: str) -> dict[str, str]:
+    response = payload[response_key]
+    assert isinstance(response, dict)
+    return {
+        "endpointId": str(payload.get("endpointId", "unknown")),
+        "result": str(response.get("result", "unknown")),
+    }
+
+
 class SpotifyContractTest(unittest.TestCase):
     def test_get_devices_json_request_contract(self) -> None:
         request_payload = json.loads((TESTDATA_ROOT / "get_devices_request.json").read_text(encoding="utf-8"))
@@ -164,6 +173,202 @@ class SpotifyContractTest(unittest.TestCase):
             normalize_playback_state(response_payload, "spotify.currently-playing.response"),
         )
 
+    def test_play_json_request_contract(self) -> None:
+        request_payload = json.loads((TESTDATA_ROOT / "play_request.json").read_text(encoding="utf-8"))
+        self.assertEqual({"spotify.play": ""}, request_payload)
+
+    def test_play_cbor_request_contract(self) -> None:
+        request_payload = load_cbor_hex(TESTDATA_ROOT / "play_request.cbor.hex")
+        self.assertEqual({"spotify.play": ""}, request_payload)
+
+    def test_play_json_response_contract(self) -> None:
+        response_payload = json.loads((TESTDATA_ROOT / "play_response.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.play.response"),
+        )
+
+    def test_play_cbor_response_contract(self) -> None:
+        response_payload = load_cbor_hex(TESTDATA_ROOT / "play_response.cbor.hex")
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.play.response"),
+        )
+
+    def test_pause_json_request_contract(self) -> None:
+        request_payload = json.loads((TESTDATA_ROOT / "pause_request.json").read_text(encoding="utf-8"))
+        self.assertEqual({"spotify.pause": ""}, request_payload)
+
+    def test_pause_cbor_request_contract(self) -> None:
+        request_payload = load_cbor_hex(TESTDATA_ROOT / "pause_request.cbor.hex")
+        self.assertEqual({"spotify.pause": ""}, request_payload)
+
+    def test_pause_json_response_contract(self) -> None:
+        response_payload = json.loads((TESTDATA_ROOT / "pause_response.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.pause.response"),
+        )
+
+    def test_pause_cbor_response_contract(self) -> None:
+        response_payload = load_cbor_hex(TESTDATA_ROOT / "pause_response.cbor.hex")
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.pause.response"),
+        )
+
+    def test_next_json_request_contract(self) -> None:
+        request_payload = json.loads((TESTDATA_ROOT / "next_request.json").read_text(encoding="utf-8"))
+        self.assertEqual({"spotify.next": ""}, request_payload)
+
+    def test_next_cbor_request_contract(self) -> None:
+        request_payload = load_cbor_hex(TESTDATA_ROOT / "next_request.cbor.hex")
+        self.assertEqual({"spotify.next": ""}, request_payload)
+
+    def test_next_json_response_contract(self) -> None:
+        response_payload = json.loads((TESTDATA_ROOT / "next_response.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.next.response"),
+        )
+
+    def test_next_cbor_response_contract(self) -> None:
+        response_payload = load_cbor_hex(TESTDATA_ROOT / "next_response.cbor.hex")
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.next.response"),
+        )
+
+    def test_previous_json_request_contract(self) -> None:
+        request_payload = json.loads((TESTDATA_ROOT / "previous_request.json").read_text(encoding="utf-8"))
+        self.assertEqual({"spotify.previous": ""}, request_payload)
+
+    def test_previous_cbor_request_contract(self) -> None:
+        request_payload = load_cbor_hex(TESTDATA_ROOT / "previous_request.cbor.hex")
+        self.assertEqual({"spotify.previous": ""}, request_payload)
+
+    def test_previous_json_response_contract(self) -> None:
+        response_payload = json.loads((TESTDATA_ROOT / "previous_response.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.previous.response"),
+        )
+
+    def test_previous_cbor_response_contract(self) -> None:
+        response_payload = load_cbor_hex(TESTDATA_ROOT / "previous_response.cbor.hex")
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.previous.response"),
+        )
+
+    def test_set_volume_json_request_contract(self) -> None:
+        request_payload = json.loads((TESTDATA_ROOT / "set_volume_request.json").read_text(encoding="utf-8"))
+        self.assertEqual({"spotify.volume": "12"}, request_payload)
+
+    def test_set_volume_cbor_request_contract(self) -> None:
+        request_payload = load_cbor_hex(TESTDATA_ROOT / "set_volume_request.cbor.hex")
+        self.assertEqual({"spotify.volume": "12"}, request_payload)
+
+    def test_set_volume_json_response_contract(self) -> None:
+        response_payload = json.loads((TESTDATA_ROOT / "set_volume_response.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.volume.response"),
+        )
+
+    def test_set_volume_cbor_response_contract(self) -> None:
+        response_payload = load_cbor_hex(TESTDATA_ROOT / "set_volume_response.cbor.hex")
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.volume.response"),
+        )
+
+    def test_shuffle_json_request_contract(self) -> None:
+        request_payload = json.loads((TESTDATA_ROOT / "shuffle_request.json").read_text(encoding="utf-8"))
+        self.assertEqual({"spotify.shuffle": "on"}, request_payload)
+
+    def test_shuffle_cbor_request_contract(self) -> None:
+        request_payload = load_cbor_hex(TESTDATA_ROOT / "shuffle_request.cbor.hex")
+        self.assertEqual({"spotify.shuffle": "on"}, request_payload)
+
+    def test_shuffle_json_response_contract(self) -> None:
+        response_payload = json.loads((TESTDATA_ROOT / "shuffle_response.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.shuffle.response"),
+        )
+
+    def test_shuffle_cbor_response_contract(self) -> None:
+        response_payload = load_cbor_hex(TESTDATA_ROOT / "shuffle_response.cbor.hex")
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.shuffle.response"),
+        )
+
+    def test_repeat_json_request_contract(self) -> None:
+        request_payload = json.loads((TESTDATA_ROOT / "repeat_request.json").read_text(encoding="utf-8"))
+        self.assertEqual({"spotify.repeat": "track"}, request_payload)
+
+    def test_repeat_cbor_request_contract(self) -> None:
+        request_payload = load_cbor_hex(TESTDATA_ROOT / "repeat_request.cbor.hex")
+        self.assertEqual({"spotify.repeat": "track"}, request_payload)
+
+    def test_repeat_json_response_contract(self) -> None:
+        response_payload = json.loads((TESTDATA_ROOT / "repeat_response.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.repeat.response"),
+        )
+
+    def test_repeat_cbor_response_contract(self) -> None:
+        response_payload = load_cbor_hex(TESTDATA_ROOT / "repeat_response.cbor.hex")
+        self.assertEqual(
+            {
+                "endpointId": "test-endpoint-id",
+                "result": "OK",
+            },
+            normalize_command_result(response_payload, "spotify.repeat.response"),
+        )
+
     def test_spotify_examples_keep_docs_tags(self) -> None:
         expectations = {
             REPO_ROOT / "examples" / "spotify" / "GetDevicesJson" / "GetDevicesJson.ino": "spotify-get-devices-json-docs",
@@ -172,6 +377,16 @@ class SpotifyContractTest(unittest.TestCase):
             REPO_ROOT / "examples" / "spotify" / "GetStateCbor" / "GetStateCbor.ino": "spotify-get-state-cbor-docs",
             REPO_ROOT / "examples" / "spotify" / "CurrentlyPlayingJson" / "CurrentlyPlayingJson.ino": "spotify-currently-playing-json-docs",
             REPO_ROOT / "examples" / "spotify" / "CurrentlyPlayingCbor" / "CurrentlyPlayingCbor.ino": "spotify-currently-playing-cbor-docs",
+            REPO_ROOT / "examples" / "spotify" / "PlayJson" / "PlayJson.ino": "spotify-play-json-docs",
+            REPO_ROOT / "examples" / "spotify" / "PlayCbor" / "PlayCbor.ino": "spotify-play-cbor-docs",
+            REPO_ROOT / "examples" / "spotify" / "PausePlaybackJson" / "PausePlaybackJson.ino": "spotify-pause-json-docs",
+            REPO_ROOT / "examples" / "spotify" / "PausePlaybackCbor" / "PausePlaybackCbor.ino": "spotify-pause-cbor-docs",
+            REPO_ROOT / "examples" / "spotify" / "NextTrackJson" / "NextTrackJson.ino": "spotify-next-json-docs",
+            REPO_ROOT / "examples" / "spotify" / "NextTrackCbor" / "NextTrackCbor.ino": "spotify-next-cbor-docs",
+            REPO_ROOT / "examples" / "spotify" / "PreviousTrackJson" / "PreviousTrackJson.ino": "spotify-previous-json-docs",
+            REPO_ROOT / "examples" / "spotify" / "PreviousTrackCbor" / "PreviousTrackCbor.ino": "spotify-previous-cbor-docs",
+            REPO_ROOT / "examples" / "spotify" / "SetVolumeJson" / "SetVolumeJson.ino": "spotify-set-volume-json-docs",
+            REPO_ROOT / "examples" / "spotify" / "SetVolumeCbor" / "SetVolumeCbor.ino": "spotify-set-volume-cbor-docs",
         }
 
         for path, tag_name in expectations.items():

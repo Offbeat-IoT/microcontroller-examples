@@ -33,10 +33,18 @@ def find_sketch_directories(repo_root: Path) -> list[Path]:
 def ensure_local_config_headers(sketch_directories: list[Path]) -> list[Path]:
     created_headers: list[Path] = []
     for sketch_directory in sketch_directories:
-        example_header = sketch_directory / "offbeat_test_config.h.example"
         local_header = sketch_directory / "offbeat_test_config.h"
-        if local_header.exists() or not example_header.exists():
+        if local_header.exists():
             continue
+
+        example_header = sketch_directory / "offbeat_test_config.h.example"
+        if not example_header.exists():
+            provider_header = sketch_directory.parent / "offbeat_test_config.h.example"
+            if provider_header.exists():
+                example_header = provider_header
+            else:
+                continue
+
         shutil.copyfile(example_header, local_header)
         created_headers.append(local_header)
     return created_headers
