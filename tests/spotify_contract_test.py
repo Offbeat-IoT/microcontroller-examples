@@ -420,6 +420,15 @@ class SpotifyContractTest(unittest.TestCase):
             self.assertIn(f"// tag::{tag_name}[]", content)
             self.assertIn(f"// end::{tag_name}[]", content)
 
+    def test_every_spotify_sketch_exposes_doc_tags(self) -> None:
+        spotify_sketches = sorted((REPO_ROOT / "examples" / "spotify").glob("*/*.ino"))
+        self.assertTrue(spotify_sketches)
+
+        for sketch in spotify_sketches:
+            content = sketch.read_text(encoding="utf-8")
+            self.assertIn("// tag::spotify-", content, sketch.as_posix())
+            self.assertIn("// end::spotify-", content, sketch.as_posix())
+
 
 if __name__ == "__main__":
     unittest.main()
