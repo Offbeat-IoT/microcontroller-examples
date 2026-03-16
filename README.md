@@ -38,6 +38,9 @@ The shared code is intentionally narrow:
 - `src/offbeat/spotify/SpotifyPlaybackStateCbor.h` builds CBOR playback-state requests and parses the matching response payloads.
 - `src/SpotifyGetDevicesJson.h` and `src/SpotifyGetDevicesCbor.h` are thin Arduino-friendly entry headers that forward to the provider-specific implementation.
 - `src/SpotifyPlaybackStateJson.h` and `src/SpotifyPlaybackStateCbor.h` do the same for the playback-state examples.
+- `src/offbeat/fitbit/FitbitExampleSupport.h` owns the shared WiFi setup used by the Fitbit examples.
+- `src/offbeat/fitbit/FitbitJsonExampleSupport.h` and `src/offbeat/fitbit/FitbitCborExampleSupport.h` build Fitbit requests, parse payload roots, and print common response values.
+- `src/FitbitJsonExampleSupport.h` and `src/FitbitCborExampleSupport.h` are the Arduino-friendly forwarding headers used from the real Fitbit sketches.
 
 The sketches still own:
 
@@ -86,9 +89,16 @@ The compile script does the repetitive setup for you:
 - compiles every sketch under `examples/`
 - removes the generated local config headers afterwards
 
+## Provider Coverage
+
+Current providers:
+
+- `spotify`: real JSON and CBOR sketches for playback, library, browse, and profile requests
+- `fitbit`: real JSON and CBOR sketches for activities, body, food, water, and sleep requests
+
 ## Current Example Dependencies
 
-The current Spotify examples use:
+The current Spotify and Fitbit examples use:
 
 - `ESP8266WiFi`
 - `WebSockets`

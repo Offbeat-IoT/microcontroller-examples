@@ -84,6 +84,16 @@ class CompileExamplesTest(unittest.TestCase):
         self.assertIn(REPO_ROOT / "examples" / "spotify" / "TracksCbor", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "spotify" / "UsersJson", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "spotify" / "UsersCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "ActivitiesJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "ActivitiesCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "BodyJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "BodyCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "FoodJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "FoodCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "WaterJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "WaterCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "SleepJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "fitbit" / "SleepCbor", sketch_directories)
 
     def test_ensure_local_config_headers_copies_missing_config(self) -> None:
         with tempfile.TemporaryDirectory() as temp_directory_name:
