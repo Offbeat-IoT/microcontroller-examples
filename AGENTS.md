@@ -28,5 +28,6 @@ python scripts/compile_examples.py --fqbn esp8266:esp8266:nodemcuv2
 
 - Keep shared code feature-specific.
 - Put reusable Spotify get-devices helpers in `src/offbeat/spotify/`.
+- Put assistant device-command helpers in `src/offbeat/alexa/`, `src/offbeat/google_home/`, and shared incoming-json utilities in `src/offbeat/core/` only when both providers genuinely need them.
 - Keep WiFi setup, websocket wiring, and serial printing inside the example sketches so customers can understand the full flow quickly.
 - Do not add generic provider frameworks unless two examples genuinely need the same logic.

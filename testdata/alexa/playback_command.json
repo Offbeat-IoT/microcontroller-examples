@@ -1,0 +1,22 @@
+{
+  "play": {
+    "playerControl": "Play",
+    "endpointId": "alexa-speaker-01"
+  },
+  "pause": {
+    "playerControl": "Pause",
+    "endpointId": "alexa-speaker-01"
+  },
+  "next": {
+    "playerControl": "Next",
+    "endpointId": "alexa-speaker-01"
+  },
+  "previous": {
+    "playerControl": "Prev",
+    "endpointId": "alexa-speaker-01"
+  },
+  "stop": {
+    "playerControl": "Stop",
+    "endpointId": "alexa-speaker-01"
+  }
+}

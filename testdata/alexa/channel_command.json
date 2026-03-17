@@ -1,0 +1,10 @@
+{
+  "setChannel": {
+    "endpointId": "alexa-tv-01",
+    "SetChannel": 1
+  },
+  "skipChannel": {
+    "skipChannel": 1,
+    "endpointId": "alexa-tv-01"
+  }
+}

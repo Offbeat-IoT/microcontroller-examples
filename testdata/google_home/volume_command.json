@@ -1,0 +1,10 @@
+{
+  "setVolume": {
+    "volume": 665,
+    "endpointId": "google-speaker-01"
+  },
+  "adjustVolume": {
+    "volumesteps": -1,
+    "endpointId": "google-speaker-01"
+  }
+}

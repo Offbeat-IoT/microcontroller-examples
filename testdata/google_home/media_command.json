@@ -1,0 +1,18 @@
+{
+  "pause": {
+    "playerControl": "Pause",
+    "endpointId": "google-speaker-01"
+  },
+  "repeat": {
+    "playerControl": "Repeat",
+    "endpointId": "google-speaker-01"
+  },
+  "seekAbsolute": {
+    "endpointId": "google-speaker-01",
+    "SeekAbsolute": 30000
+  },
+  "seekRelative": {
+    "endpointId": "google-speaker-01",
+    "Seek": -10000
+  }
+}

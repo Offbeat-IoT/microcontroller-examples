@@ -1,0 +1,14 @@
+{
+  "setChannel": {
+    "endpointId": "google-tv-01",
+    "SetChannel": 9
+  },
+  "skipForward": {
+    "skipChannel": 1,
+    "endpointId": "google-tv-01"
+  },
+  "skipBack": {
+    "skipChannel": -1,
+    "endpointId": "google-tv-01"
+  }
+}

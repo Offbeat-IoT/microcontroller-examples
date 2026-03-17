@@ -1,0 +1,10 @@
+{
+  "setBrightness": {
+    "adjustBrightnessPercent": 59,
+    "endpointId": "alexa-light-01"
+  },
+  "adjustBrightness": {
+    "adjustBrightnessWeight": -3,
+    "endpointId": "alexa-light-01"
+  }
+}

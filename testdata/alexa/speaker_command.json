@@ -1,0 +1,14 @@
+{
+  "setVolume": {
+    "volume": 30,
+    "endpointId": "alexa-speaker-01"
+  },
+  "adjustVolume": {
+    "volumesteps": 20,
+    "endpointId": "alexa-speaker-01"
+  },
+  "mute": {
+    "mute": false,
+    "endpointId": "alexa-speaker-01"
+  }
+}

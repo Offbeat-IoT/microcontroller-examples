@@ -1,0 +1,10 @@
+{
+  "activate": {
+    "endpointId": "alexa-scene-01",
+    "scenestate": "TurnOn"
+  },
+  "deactivate": {
+    "endpointId": "alexa-scene-01",
+    "scenestate": "TurnOff"
+  }
+}

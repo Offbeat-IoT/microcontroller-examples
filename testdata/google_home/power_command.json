@@ -1,0 +1,10 @@
+{
+  "turnOn": {
+    "endpointId": "google-switch-01",
+    "powerstate": "TurnOn"
+  },
+  "turnOff": {
+    "endpointId": "google-switch-01",
+    "powerstate": "TurnOff"
+  }
+}

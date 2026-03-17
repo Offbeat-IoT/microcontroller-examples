@@ -94,6 +94,20 @@ class CompileExamplesTest(unittest.TestCase):
         self.assertIn(REPO_ROOT / "examples" / "fitbit" / "WaterCbor", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "fitbit" / "SleepJson", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "fitbit" / "SleepCbor", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "alexa" / "BrightnessCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "alexa" / "PowerCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "alexa" / "ColorCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "alexa" / "SpeakerCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "alexa" / "PlaybackCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "alexa" / "ChannelCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "alexa" / "SceneCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "alexa" / "ThermostatCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "google-home" / "BrightnessCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "google-home" / "PowerCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "google-home" / "ColorCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "google-home" / "VolumeCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "google-home" / "MediaCommand", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "google-home" / "ChannelCommand", sketch_directories)
 
     def test_ensure_local_config_headers_copies_missing_config(self) -> None:
         with tempfile.TemporaryDirectory() as temp_directory_name:

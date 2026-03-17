@@ -1,0 +1,10 @@
+{
+  "turnOn": {
+    "endpointId": "alexa-switch-01",
+    "powerstate": "TurnOn"
+  },
+  "turnOff": {
+    "endpointId": "alexa-switch-01",
+    "powerstate": "TurnOff"
+  }
+}

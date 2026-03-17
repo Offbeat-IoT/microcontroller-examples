@@ -41,6 +41,9 @@ The shared code is intentionally narrow:
 - `src/offbeat/fitbit/FitbitExampleSupport.h` owns the shared WiFi setup used by the Fitbit examples.
 - `src/offbeat/fitbit/FitbitJsonExampleSupport.h` and `src/offbeat/fitbit/FitbitCborExampleSupport.h` build Fitbit requests, parse payload roots, and print common response values.
 - `src/FitbitJsonExampleSupport.h` and `src/FitbitCborExampleSupport.h` are the Arduino-friendly forwarding headers used from the real Fitbit sketches.
+- `src/offbeat/core/WebsocketJsonExampleSupport.h` keeps the shared WiFi and incoming JSON command parsing helpers small for device-side command examples.
+- `src/offbeat/alexa/AlexaExampleSupport.h` and `src/offbeat/google_home/GoogleHomeExampleSupport.h` define the small command-key helpers used by the Alexa and Google Home device examples.
+- `src/AlexaExampleSupport.h` and `src/GoogleHomeExampleSupport.h` are the Arduino-friendly forwarding headers used from the assistant sketches.
 
 The sketches still own:
 
@@ -95,6 +98,8 @@ Current providers:
 
 - `spotify`: real JSON and CBOR sketches for playback, library, browse, and profile requests
 - `fitbit`: real JSON and CBOR sketches for activities, body, food, water, and sleep requests
+- `alexa`: real device-side sketches for power, brightness, color, speaker, playback, channel, scene, and thermostat commands
+- `google-home`: real device-side sketches for power, brightness, color, volume, media, and channel commands
 
 ## Current Example Dependencies
 
@@ -104,6 +109,12 @@ The current Spotify and Fitbit examples use:
 - `WebSockets`
 - `ArduinoJson`
 - `ArduinoCbor` from `https://github.com/bergos/ArduinoCbor`
+
+The Alexa and Google Home device-side examples use:
+
+- `ESP8266WiFi`
+- `WebSockets`
+- `ArduinoJson`
 
 ## Configuration
 

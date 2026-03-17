@@ -1,0 +1,14 @@
+{
+  "absolute": {
+    "brightness": 456,
+    "endpointId": "google-light-01"
+  },
+  "relativePercent": {
+    "adjustBrightnessPercent": 20,
+    "endpointId": "google-light-01"
+  },
+  "relativeWeight": {
+    "adjustBrightnessWeight": -1,
+    "endpointId": "google-light-01"
+  }
+}
