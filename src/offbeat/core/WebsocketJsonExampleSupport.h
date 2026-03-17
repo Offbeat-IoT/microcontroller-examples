@@ -42,7 +42,7 @@ inline ParseStatus parseRoot(
     return ParseStatus::kInvalidPayload;
   }
 
-  root = document.as<JsonObjectConst>();
+  root = document.template as<JsonObjectConst>();
   if (root.isNull()) {
     return ParseStatus::kInvalidPayload;
   }
