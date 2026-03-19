@@ -159,7 +159,7 @@ def compile_sketches(repo_root: Path, fqbn: str) -> None:
                     fqbn,
                     "--build-path",
                     str(build_directory),
-                    "--library",
+                    "--libraries",
                     str(repo_root),
                     "--libraries",
                     str(libraries_directory),
