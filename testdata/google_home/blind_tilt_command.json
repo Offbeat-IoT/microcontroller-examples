@@ -1,0 +1,10 @@
+{
+  "percent": {
+    "endpointId": "google-blind-01",
+    "rotationPercent": 60
+  },
+  "degrees": {
+    "endpointId": "google-blind-01",
+    "rotationDegrees": 108
+  }
+}

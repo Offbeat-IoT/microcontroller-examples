@@ -59,6 +59,11 @@ class AlexaContractTest(unittest.TestCase):
         payload = load_json(TESTDATA_ROOT / "thermostat_command.json")
         self.assertEqual("COOL", payload["thermMode"])
 
+    def test_blind_tilt_command_contract(self) -> None:
+        payload = load_json(TESTDATA_ROOT / "blind_tilt_command.json")
+        self.assertEqual(60, payload["set"]["rangeValue"])
+        self.assertEqual(-10, payload["adjust"]["rangeValueDelta"])
+
     def test_alexa_examples_keep_docs_tags(self) -> None:
         expectations = {
             REPO_ROOT / "examples" / "alexa" / "BrightnessCommand" / "BrightnessCommand.ino": "alexa-brightness-command-docs",
@@ -69,6 +74,7 @@ class AlexaContractTest(unittest.TestCase):
             REPO_ROOT / "examples" / "alexa" / "ChannelCommand" / "ChannelCommand.ino": "alexa-channel-command-docs",
             REPO_ROOT / "examples" / "alexa" / "SceneCommand" / "SceneCommand.ino": "alexa-scene-command-docs",
             REPO_ROOT / "examples" / "alexa" / "ThermostatCommand" / "ThermostatCommand.ino": "alexa-thermostat-command-docs",
+            REPO_ROOT / "examples" / "alexa" / "BlindTiltCommand" / "BlindTiltCommand.ino": "alexa-blind-tilt-command-docs",
         }
 
         for path, tag_name in expectations.items():

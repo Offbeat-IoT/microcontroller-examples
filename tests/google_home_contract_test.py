@@ -50,6 +50,11 @@ class GoogleHomeContractTest(unittest.TestCase):
         self.assertEqual(1, payload["skipForward"]["skipChannel"])
         self.assertEqual(-1, payload["skipBack"]["skipChannel"])
 
+    def test_blind_tilt_command_contract(self) -> None:
+        payload = load_json(TESTDATA_ROOT / "blind_tilt_command.json")
+        self.assertEqual(60, payload["percent"]["rotationPercent"])
+        self.assertEqual(108, payload["degrees"]["rotationDegrees"])
+
     def test_google_home_examples_keep_docs_tags(self) -> None:
         expectations = {
             REPO_ROOT / "examples" / "google-home" / "BrightnessCommand" / "BrightnessCommand.ino": "google-home-brightness-command-docs",
@@ -58,6 +63,7 @@ class GoogleHomeContractTest(unittest.TestCase):
             REPO_ROOT / "examples" / "google-home" / "VolumeCommand" / "VolumeCommand.ino": "google-home-volume-command-docs",
             REPO_ROOT / "examples" / "google-home" / "MediaCommand" / "MediaCommand.ino": "google-home-media-command-docs",
             REPO_ROOT / "examples" / "google-home" / "ChannelCommand" / "ChannelCommand.ino": "google-home-channel-command-docs",
+            REPO_ROOT / "examples" / "google-home" / "BlindTiltCommand" / "BlindTiltCommand.ino": "google-home-blind-tilt-command-docs",
         }
 
         for path, tag_name in expectations.items():

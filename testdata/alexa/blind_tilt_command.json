@@ -1,0 +1,10 @@
+{
+  "set": {
+    "endpointId": "alexa-blind-01",
+    "rangeValue": 60
+  },
+  "adjust": {
+    "endpointId": "alexa-blind-01",
+    "rangeValueDelta": -10
+  }
+}
