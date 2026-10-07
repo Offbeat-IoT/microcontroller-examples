@@ -1,0 +1,5 @@
+#define OFFBEAT_WIFI_SSID "your-wifi-ssid"
+#define OFFBEAT_WIFI_PASSWORD "your-wifi-password"
+#define OFFBEAT_WS_HOST "your-soeren-host"
+#define OFFBEAT_WS_PORT 80
+#define OFFBEAT_WS_PATH "/websocket"
