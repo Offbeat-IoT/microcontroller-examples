@@ -13,6 +13,9 @@ class WeatherContractTest(unittest.TestCase):
 
         self.assertIn('request["weather"]["city"] = "Copenhagen"', sketch)
         self.assertIn('response["weather.response"]', sketch)
+        self.assertIn('weather["location"]["name"]', sketch)
+        self.assertIn('weather["current"]["temp_c"]', sketch)
+        self.assertIn('weather["current"]["condition"]["code"]', sketch)
         self.assertIn("weather-current-json-docs", sketch)
 
 

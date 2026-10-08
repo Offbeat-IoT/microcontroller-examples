@@ -27,7 +27,7 @@ void sendWeatherRequest(WebSocketsClient& socket) {
 }
 
 void handleWeatherResponse(uint8_t* payload, size_t length) {
-  StaticJsonDocument<1024> response;
+  StaticJsonDocument<2048> response;
   DeserializationError error = deserializeJson(response, payload, length);
   if (error) {
     Serial.println("Unable to parse weather response");
@@ -41,13 +41,13 @@ void handleWeatherResponse(uint8_t* payload, size_t length) {
   }
 
   Serial.print("Location: ");
-  Serial.println(weather["location"].as<const char*>());
+  Serial.println(weather["location"]["name"].as<const char*>());
   Serial.print("Temperature C: ");
-  Serial.println(weather["temperature_2m"].as<float>());
+  Serial.println(weather["current"]["temp_c"].as<float>());
   Serial.print("Wind km/h: ");
-  Serial.println(weather["wind_speed_10m"].as<float>());
-  Serial.print("WMO weather code: ");
-  Serial.println(weather["weather_code"].as<int>());
+  Serial.println(weather["current"]["wind_kph"].as<float>());
+  Serial.print("WeatherAPI condition code: ");
+  Serial.println(weather["current"]["condition"]["code"].as<int>());
   Serial.println("TEST:PASS");
 }
 // end::weather-current-json-docs[]
