@@ -17,6 +17,13 @@ MANUAL_LIBRARY_REPOS = {
 }
 
 ESP8266_PACKAGE_INDEX = "https://arduino.esp8266.com/stable/package_esp8266com_index.json"
+ESP32_PACKAGE_INDEX = "https://espressif.github.io/arduino-esp32/package_esp32_index.json"
+
+# Providers whose examples need a different board than the default one. The camera example talks
+# to an ESP32-CAM sensor, so it cannot be compiled for the ESP8266 board the other examples use.
+PROVIDER_BOARD_FQBNS = {
+    "camera": "esp32:esp32:esp32cam",
+}
 
 
 def run(command: list[str], cwd: Path) -> None:
@@ -78,9 +85,16 @@ def ensure_arduino_cli_available() -> None:
         raise RuntimeError("arduino-cli is not available on PATH")
 
 
+def board_fqbn(sketch_directory: Path, default_fqbn: str) -> str:
+    provider = sketch_directory.parent.name
+    return PROVIDER_BOARD_FQBNS.get(provider, default_fqbn)
+
+
 def additional_urls(fqbn: str) -> list[str]:
     if fqbn.startswith("esp8266:"):
         return ["--additional-urls", ESP8266_PACKAGE_INDEX]
+    if fqbn.startswith("esp32:"):
+        return ["--additional-urls", ESP32_PACKAGE_INDEX]
     return []
 
 
@@ -141,7 +155,8 @@ def compile_sketches(repo_root: Path, fqbn: str) -> None:
         raise RuntimeError("No sketches found in examples/")
 
     ensure_arduino_cli_available()
-    ensure_core_installed(repo_root, fqbn)
+    for board in sorted({board_fqbn(directory, fqbn) for directory in sketch_directories}):
+        ensure_core_installed(repo_root, board)
     libraries_directory = ensure_libraries_installed(repo_root)
 
     generated_headers = ensure_local_config_headers(sketch_directories)
@@ -156,7 +171,7 @@ def compile_sketches(repo_root: Path, fqbn: str) -> None:
                     "arduino-cli",
                     "compile",
                     "--fqbn",
-                    fqbn,
+                    board_fqbn(sketch_directory, fqbn),
                     "--build-path",
                     str(build_directory),
                     "--libraries",
@@ -176,7 +191,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--fqbn",
         default="esp8266:esp8266:nodemcuv2",
-        help="Arduino board FQBN to compile against.",
+        help="Default Arduino board FQBN. Providers listed in PROVIDER_BOARD_FQBNS keep their own board.",
     )
     parser.add_argument(
         "--repo-root",

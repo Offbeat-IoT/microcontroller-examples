@@ -15,11 +15,14 @@ src/offbeat/spotify
 src/offbeat/fitbit
 src/offbeat/alexa
 src/offbeat/google_home
+src/offbeat/camera
 examples/spotify
 examples/fitbit
 examples/alexa
 examples/google-home
+examples/camera
 testdata/spotify
+testdata/camera
 tests
 scripts
 ```
@@ -43,7 +46,8 @@ The shared code is intentionally narrow:
 - `src/FitbitJsonExampleSupport.h` and `src/FitbitCborExampleSupport.h` are the Arduino-friendly forwarding headers used from the real Fitbit sketches.
 - `src/offbeat/core/WebsocketJsonExampleSupport.h` keeps the shared WiFi and incoming JSON command parsing helpers small for device-side command examples.
 - `src/offbeat/alexa/AlexaExampleSupport.h` and `src/offbeat/google_home/GoogleHomeExampleSupport.h` define the small command-key helpers used by the Alexa and Google Home device examples.
-- `src/AlexaExampleSupport.h` and `src/GoogleHomeExampleSupport.h` are the Arduino-friendly forwarding headers used from the assistant sketches.
+- `src/offbeat/camera/CameraChunkedStreamExampleSupport.h` keeps the chunked camera stream constants, the agreement builder, and the server limits that a sketch must respect.
+- `src/AlexaExampleSupport.h`, `src/GoogleHomeExampleSupport.h`, and `src/CameraChunkedStreamExampleSupport.h` are the Arduino-friendly forwarding headers used from the sketches.
 
 The sketches still own:
 
@@ -59,7 +63,8 @@ That keeps the examples easy for customers to follow and avoids growing a large 
 This repository keeps hardware out of the default test flow. The confidence model is:
 
 1. Host-side contract tests validate the JSON and CBOR payload shapes.
-2. `arduino-cli` compile checks prove the real sketches still build for the target board.
+2. `arduino-cli` compile checks prove the real sketches still build for the target board (ESP8266
+   for the JSON/CBOR and assistant examples, ESP32-CAM for the camera example).
 3. Manual board testing can be done later once a set of examples is stable.
 
 GitHub Actions runs the same flow on every push and pull request via [.github/workflows/build.yml](./.github/workflows/build.yml).
@@ -82,14 +87,18 @@ Compile every example for NodeMCU / ESP8266:
 python scripts/compile_examples.py --fqbn esp8266:esp8266:nodemcuv2
 ```
 
+The `--fqbn` is the default board. Providers that need different hardware override it in
+`PROVIDER_BOARD_FQBNS`; the camera examples build for `esp32:esp32:esp32cam` because the sketch
+uses the ESP32 camera driver.
+
 The compile script does the repetitive setup for you:
 
-- installs the ESP8266 core with `arduino-cli`
+- installs the core for every board the sketches use (`esp8266` and `esp32`) with `arduino-cli`
 - installs `ArduinoJson` and `WebSockets`
 - clones `ArduinoCbor` into `.arduino-libraries/`
 - patches `ArduinoCbor` locally with `#include <math.h>` so it builds on ESP8266
 - copies each `offbeat_test_config.h.example` to a temporary local `offbeat_test_config.h`
-- compiles every sketch under `examples/`
+- compiles every sketch under `examples/` against its provider's board
 - removes the generated local config headers afterwards
 
 ## Provider Coverage
@@ -100,6 +109,7 @@ Current providers:
 - `fitbit`: real JSON and CBOR sketches for activities, body, food, water, and sleep requests
 - `alexa`: real device-side sketches for power, brightness, color, speaker, playback, channel, scene, and thermostat commands
 - `google-home`: real device-side sketches for power, brightness, color, volume, media, and channel commands
+- `camera`: an ESP32-CAM sketch that streams JPEG frames with the chunked camera protocol
 
 ## Current Example Dependencies
 
@@ -115,6 +125,12 @@ The Alexa and Google Home device-side examples use:
 - `ESP8266WiFi`
 - `WebSockets`
 - `ArduinoJson`
+
+The camera example uses the ESP32 Arduino core:
+
+- `WiFi`
+- `WebSockets`
+- `esp_camera` (bundled with the ESP32 core)
 
 ## Configuration
 

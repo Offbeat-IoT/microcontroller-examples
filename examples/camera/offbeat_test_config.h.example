@@ -1,0 +1,17 @@
+#pragma once
+
+#define OFFBEAT_WIFI_SSID "replace-me"
+#define OFFBEAT_WIFI_PASSWORD "replace-me"
+
+// Device WebSocket of the Offbeat relay. The path carries the endpoint id, e.g.
+// "/ws?device=AbCd1234" - the same socket the device uses for commands and OTA.
+#define OFFBEAT_WS_HOST "replace-me"
+#define OFFBEAT_WS_PORT 443
+#define OFFBEAT_WS_PATH "/ws"
+
+// Patch quarter of an example for your board. Pins below are for the AI-Thinker ESP32-CAM.
+#define OFFBEAT_CAMERA_MODEL_AI_THINKER 1
+
+// One binary WebSocket message per agreed chunk. 4096 stays inside the server's
+// camera.stream.max-chunk-bytes (32768) and keeps each TLS write small.
+#define OFFBEAT_CAMERA_CHUNK_BYTES 4096

@@ -111,6 +111,23 @@ class CompileExamplesTest(unittest.TestCase):
         self.assertIn(REPO_ROOT / "examples" / "google-home" / "ChannelCommand", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "google-home" / "BlindTiltCommand", sketch_directories)
         self.assertIn(REPO_ROOT / "examples" / "weather" / "CurrentWeatherJson", sketch_directories)
+        self.assertIn(REPO_ROOT / "examples" / "camera" / "ChunkedVideoStream", sketch_directories)
+
+    def test_camera_examples_build_for_the_esp32_cam_board(self) -> None:
+        sketch_directory = REPO_ROOT / "examples" / "camera" / "ChunkedVideoStream"
+
+        self.assertEqual(
+            "esp32:esp32:esp32cam",
+            COMPILE_EXAMPLES.board_fqbn(sketch_directory, "esp8266:esp8266:nodemcuv2"),
+        )
+
+    def test_other_providers_keep_the_default_board(self) -> None:
+        sketch_directory = REPO_ROOT / "examples" / "weather" / "CurrentWeatherJson"
+
+        self.assertEqual(
+            "esp8266:esp8266:nodemcuv2",
+            COMPILE_EXAMPLES.board_fqbn(sketch_directory, "esp8266:esp8266:nodemcuv2"),
+        )
 
     def test_ensure_local_config_headers_copies_missing_config(self) -> None:
         with tempfile.TemporaryDirectory() as temp_directory_name:
