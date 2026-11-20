@@ -14,6 +14,10 @@ python -m unittest discover -s tests -p "*_test.py"
 python scripts/compile_examples.py --fqbn esp8266:esp8266:nodemcuv2
 ```
 
+The compile script uses the FQBN above as the default board and overrides it per provider in
+`PROVIDER_BOARD_FQBNS` - the camera example builds for `esp32:esp32:esp32cam`, so both the ESP8266
+and the ESP32 cores are installed.
+
 ## Testing Notes
 
 - `tests/` contains host-side contract tests for the JSON and CBOR request/response fixtures.
